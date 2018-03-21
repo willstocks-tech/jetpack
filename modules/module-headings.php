@@ -90,12 +90,6 @@ function jetpack_get_module_i18n( $key ) {
 				'description' => _x( 'Give visitors an easy way to show they appreciate your content.', 'Module Description', 'jetpack' ),
 			),
 
-			'manage' => array(
-				'name' => _x( 'Manage', 'Module Name', 'jetpack' ),
-				'description' => _x( 'Manage all of your sites from a centralized dashboard.', 'Module Description', 'jetpack' ),
-				'recommended description' => _x( 'Helps you remotely manage plugins, turn on automated updates, and more from <a href="https://wordpress.com/plugins/" target="_blank">wordpress.com</a>.', 'Jumpstart Description', 'jetpack' ),
-			),
-
 			'markdown' => array(
 				'name' => _x( 'Markdown', 'Module Name', 'jetpack' ),
 				'description' => _x( 'Write posts or pages in plain-text Markdown syntax', 'Module Description', 'jetpack' ),
@@ -312,7 +306,6 @@ function jetpack_get_module_i18n_tag( $key ) {
 
 			// Modules with `Recommended` tag:
 			//  - modules/lazy-images.php
-			//  - modules/manage.php
 			//  - modules/minileven.php
 			//  - modules/monitor.php
 			//  - modules/photon.php
@@ -323,10 +316,6 @@ function jetpack_get_module_i18n_tag( $key ) {
 			//  - modules/sitemaps.php
 			//  - modules/stats.php
 			'Recommended' =>_x( 'Recommended', 'Module Tag', 'jetpack' ),
-
-			// Modules with `Centralized Management` tag:
-			//  - modules/manage.php
-			'Centralized Management' =>_x( 'Centralized Management', 'Module Tag', 'jetpack' ),
 
 			// Modules with `General` tag:
 			//  - modules/masterbar.php
