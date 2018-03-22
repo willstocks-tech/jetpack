@@ -4227,7 +4227,7 @@ p {
 </div>
 <?php endif;
 	}
-	
+
 	/**
 	 * Record a stat for later output.  This will only currently output in the admin_footer.
 	 */
