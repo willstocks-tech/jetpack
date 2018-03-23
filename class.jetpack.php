@@ -6394,7 +6394,7 @@ p {
 			'jetpack_is_holiday_snow_season'                         => null,
 			'jetpack_holiday_snow_option_updated'                    => null,
 			'jetpack_holiday_snowing'                                => null,
-			'can_display_jetpack_manage_notice'                      => null,
+			'can_display_jetpack_manage_notice'                      => 'jetpack_json_api_requests_enabled',
 		);
 
 		// This is a silly loop depth. Better way?
