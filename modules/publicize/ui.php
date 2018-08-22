@@ -38,20 +38,22 @@ class Publicize_UI {
 		}
 
 		// assets (css, js)
-		add_action( 'load-settings_page_sharing', array( &$this, 'load_assets' ) );
-		add_action( 'admin_head-post.php', array( &$this, 'post_page_metabox_assets' ) );
-		add_action( 'admin_head-post-new.php', array( &$this, 'post_page_metabox_assets' ) );
+		if ( $this->in_jetpack ) {
+			add_action( 'load-settings_page_sharing', array( $this, 'load_assets' ) );
+		}
+		add_action( 'admin_head-post.php', array( $this, 'post_page_metabox_assets' ) );
+		add_action( 'admin_head-post-new.php', array( $this, 'post_page_metabox_assets' ) );
 
 		// management of publicize (sharing screen, ajax/lightbox popup, and metabox on post screen)
-		add_action( 'pre_admin_screen_sharing', array( &$this, 'admin_page' ) );
-		add_action( 'post_submitbox_misc_actions', array( &$this, 'post_page_metabox' ) );
+		add_action( 'pre_admin_screen_sharing', array( $this, 'admin_page' ) );
+		add_action( 'post_submitbox_misc_actions', array( $this, 'post_page_metabox' ) );
 	}
 
 	/**
 	* If the ShareDaddy plugin is not active we need to add the sharing settings page to the menu still
 	*/
 	function sharing_menu() {
-		add_submenu_page( 'options-general.php', __( 'Sharing Settings', 'jetpack' ), __( 'Sharing', 'jetpack' ), 'publish_posts', 'sharing', array( &$this, 'management_page' ) );
+		add_submenu_page( 'options-general.php', __( 'Sharing Settings', 'jetpack' ), __( 'Sharing', 'jetpack' ), 'publish_posts', 'sharing', array( $this, 'management_page' ) );
 	}
 
 
@@ -72,9 +74,9 @@ class Publicize_UI {
 	}
 
 	/**
-	* styling for the sharing screen and popups
-	* JS for the options and switching
-	*/
+	 * styling for the sharing screen and popups
+	 * JS for the options and switching
+	 */
 	function load_assets() {
 		wp_enqueue_script(
 			'publicize',
@@ -121,9 +123,9 @@ class Publicize_UI {
 	}
 
 	/**
-	* Lists the current user's publicized accounts for the blog
-	* looks exactly like Publicize v1 for now, UI and functionality updates will come after the move to keyring
-	*/
+	 * Lists the current user's publicized accounts for the blog
+	 * looks exactly like Publicize v1 for now, UI and functionality updates will come after the move to keyring
+	 */
 	function admin_page() {
 		$_blog_id = get_current_blog_id();
 		?>
@@ -307,9 +309,9 @@ class Publicize_UI {
 	}
 
 	/**
-	* CSS for styling the publicize message box and counter that displays on the post page.
-	* There is also some JavaScript for length counting and some basic display effects.
-	*/
+	 * CSS for styling the publicize message box and counter that displays on the post page.
+	 * There is also some JavaScript for length counting and some basic display effects.
+	 */
 	function post_page_metabox_assets() {
 		global $post;
 		$user_id = empty( $post->post_author ) ? $GLOBALS['user_ID'] : $post->post_author;
@@ -321,22 +323,50 @@ class Publicize_UI {
 		$default_message = preg_replace( '/%([0-9])\$s/', "' + %\\1\$s + '", esc_js( $default_message ) );
 
 		$default_suffix = $this->publicize->default_suffix;
-		$default_suffix = preg_replace( '/%([0-9])\$s/', "' + %\\1\$s + '", esc_js( $default_suffix ) ); ?>
+		$default_suffix = preg_replace( '/%([0-9])\$s/', "' + %\\1\$s + '", esc_js( $default_suffix ) );
+
+		$max_length = defined( 'JETPACK_PUBLICIZE_TWITTER_LENGTH' ) ? JETPACK_PUBLICIZE_TWITTER_LENGTH : 280;
+		$max_length = $max_length - 24; // t.co link, space
+
+		?>
 
 <script type="text/javascript">
 jQuery( function($) {
 	var wpasTitleCounter    = $( '#wpas-title-counter' ),
 		wpasTwitterCheckbox = $( '.wpas-submit-twitter' ).length,
-		wpasTitle = $('#wpas-title').keyup( function() {
-		var length = wpasTitle.val().length;
-		wpasTitleCounter.text( length );
-		if ( wpasTwitterCheckbox && length > 256 ) {
+		postTitle = $( '#title' ),
+		wpasTitle = $( '#wpas-title' ).keyup( function() {
+			var postTitleVal,
+				length = wpasTitle.val().length;
+
+			if ( ! length ) {
+				length = wpasTitle.attr( 'placeholder' ).length;
+			}
+
+			wpasTitleCounter.text( length ).trigger( 'change' );
+		} ),
+		authClick = false;
+
+	wpasTitleCounter.on( 'change', function( e ) {
+		if ( wpasTwitterCheckbox && parseInt( $( e.currentTarget ).text(), 10 ) > <?php echo (int) $max_length; ?> ) {
 			wpasTitleCounter.addClass( 'wpas-twitter-length-limit' );
 		} else {
 			wpasTitleCounter.removeClass( 'wpas-twitter-length-limit' );
 		}
-		} ),
-		authClick = false;
+	} );
+
+	// Keep the postTitle and the placeholder in sync
+	postTitle.on( 'keyup', function( e ) {
+		var url = $( '#sample-permalink' ).text();
+		var defaultMessage = $.trim( '<?php printf( $default_prefix, 'url' ); printf( $default_message, 'e.currentTarget.value', 'url' ); printf( $default_suffix, 'url' ); ?>' )
+			.replace( /<[^>]+>/g,'');
+
+		wpasTitle.attr( 'placeholder', defaultMessage );
+		wpasTitle.trigger( 'keyup' );
+	} );
+
+	// set the initial placeholder
+	postTitle.trigger( 'keyup' );
 
 	$('#publicize-disconnected-form-show').click( function() {
 		$('#publicize-form').slideDown( 'fast' );
@@ -350,20 +380,17 @@ jQuery( function($) {
 
 	$('#publicize-form-edit').click( function() {
 		$('#publicize-form').slideDown( 'fast', function() {
+			var selBeg = 0, selEnd = 0;
 			wpasTitle.focus();
-			if ( !wpasTitle.text() ) {
-				var url = $('#shortlink').length ? $('#shortlink').val() : '';
 
-				var defaultMessage = $.trim( '<?php printf( $default_prefix, 'url' ); printf( $default_message, '$("#title").val()', 'url' ); printf( $default_suffix, 'url' ); ?>' );
+			if ( ! wpasTitle.text() ) {
+				wpasTitle.text( wpasTitle.attr( 'placeholder' ) );
 
-				wpasTitle.append( defaultMessage.replace( /<[^>]+>/g,'') );
-
-				var selBeg = defaultMessage.indexOf( $("#title").val() );
+				selBeg = wpasTitle.text().indexOf( postTitle.val() );
 				if ( selBeg < 0 ) {
 					selBeg = 0;
-					selEnd = 0;
 				} else {
-					selEnd = selBeg + $("#title").val().length;
+					selEnd = selBeg + postTitle.val().length;
 				}
 
 				var domObj = wpasTitle.get(0);
@@ -376,8 +403,8 @@ jQuery( function($) {
 					r.select();
 				}
 			}
-			wpasTitle.keyup();
 		} );
+
 		$('#publicize-defaults').hide();
 		$(this).hide();
 		return false;
@@ -453,7 +480,6 @@ jQuery( function($) {
 		var somethingShownAlready = false;
 		var facebookNotice = false;
 		$.each( response.data, function( index, testResult ) {
-
 			// find the li for this connection
 			if ( ! testResult.connectionTestPassed && testResult.userCanRefresh ) {
 				if ( ! somethingShownAlready ) {
@@ -498,10 +524,7 @@ jQuery( function($) {
 						.append( message );
 					facebookNotice = true;
 				}
-
 			}
-
-
 		} );
 	}
 
@@ -662,7 +685,11 @@ jQuery( function($) {
 						(
 							in_array( $post->post_status, array( 'publish', 'draft', 'future' ) )
 							&&
-							get_post_meta( $post->ID, $this->publicize->POST_SKIP . $unique_id, true )
+							(
+								get_post_meta( $post->ID, $this->publicize->POST_SKIP . $unique_id, true )
+								||
+								get_post_meta( $post->ID, $this->publicize->POST_SKIP . $connection->name )
+							)
 						)
 						||
 						(
@@ -741,8 +768,10 @@ jQuery( function($) {
 
 					if (
 						$name === 'facebook'
-					     && ! $this->publicize->is_valid_facebook_connection( $connection )
-					     && $this->publicize->is_connecting_connection( $connection )
+					&&
+						! $this->publicize->is_valid_facebook_connection( $connection )
+					&&
+						$this->publicize->is_connecting_connection( $connection )
 					) {
 						$skip = true;
 						$disabled = ' disabled="disabled"';
@@ -799,7 +828,6 @@ jQuery( function($) {
 
 		return array( ob_get_clean(), $active );
 	}
-
 
 	private function get_metabox_form_disconnected( $available_services ) {
 		ob_start();
