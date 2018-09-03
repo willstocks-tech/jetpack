@@ -21,7 +21,7 @@
 		analytics.initialize(
 			tracksUser.userid,
 			tracksUser.username,
-			tracksUser.blogid,
+			tracksUser.blogid
 		);
 	}
 
