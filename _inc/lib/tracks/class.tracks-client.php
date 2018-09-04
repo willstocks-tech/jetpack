@@ -56,7 +56,7 @@ class Jetpack_Tracks_Client {
 		if ( ! Jetpack::jetpack_tos_agreed() || ! empty( $_COOKIE['tk_opt-out'] ) ) {
 			return false;
 		}
-		
+
 		if ( ! $event instanceof Jetpack_Tracks_Event ) {
 			$event = new Jetpack_Tracks_Event( $event );
 		}
@@ -184,9 +184,7 @@ class Jetpack_Tracks_Client {
 		}
 
 		return array(
-			'blogid' => ! empty( Jetpack_Options::get_option( 'id' ) )
-				? Jetpack_Options::get_option( 'id' )
-				: 0,
+			'blogid' => Jetpack_Options::get_option( 'id', 0 ),
 			'userid' => $user_data['ID'],
 			'username' => $user_data['login'],
 		);
