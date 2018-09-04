@@ -20,8 +20,7 @@
 	if ( 'undefined' !== typeof analytics ) {
 		analytics.initialize(
 			tracksUser.userid,
-			tracksUser.username,
-			tracksUser.blogid
+			tracksUser.username
 		);
 	}
 
