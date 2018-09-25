@@ -9,6 +9,12 @@
     loader-utils "^0.2.2"
     object-assign "^4.0.1"
 
+"@babel/runtime@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0.tgz#adeb78fedfc855aa05bc041640f3f6f98e85424c"
+  dependencies:
+    regenerator-runtime "^0.12.0"
+
 "@octokit/rest@^15.5.0":
   version "15.9.0"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.9.0.tgz#47863d114cd56a398b0774b4e6f9f942b3ffd2fd"
@@ -25,6 +31,30 @@
 "@types/node@*":
   version "10.3.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.3.tgz#8798d9e39af2fa604f715ee6a6b19796528e46c3"
+
+"@wordpress/api-fetch@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/api-fetch/-/api-fetch-2.0.0.tgz#46fb1960a5438d4a8a7bd8f3b511e62c10c3cecd"
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    "@wordpress/hooks" "^2.0.0"
+    "@wordpress/i18n" "^2.0.0"
+
+"@wordpress/hooks@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/hooks/-/hooks-2.0.0.tgz#102ff0b4c8dd7274dcba9b16af8763660a7b4951"
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+
+"@wordpress/i18n@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/i18n/-/i18n-2.0.0.tgz#fd7af827451094c3ec97e58fec1b2977b83fe338"
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    gettext-parser "^1.3.1"
+    jed "^1.1.1"
+    lodash "^4.17.10"
+    memize "^1.0.5"
 
 abab@^1.0.3:
   version "1.0.4"
@@ -3670,6 +3700,13 @@ gettext-parser@^1.2.0:
     encoding "^0.1.12"
     safe-buffer "^5.1.1"
 
+gettext-parser@^1.3.1:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/gettext-parser/-/gettext-parser-1.4.0.tgz#f8baf34a292f03d5e42f02df099d301f167a7ace"
+  dependencies:
+    encoding "^0.1.12"
+    safe-buffer "^5.1.1"
+
 git-config-path@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/git-config-path/-/git-config-path-1.0.1.tgz#6d33f7ed63db0d0e118131503bab3aca47d54664"
@@ -5030,6 +5067,10 @@ jed@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/jed/-/jed-1.0.2.tgz#728b9e1475f2aef4747ef93e278713a8489040fa"
 
+jed@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/jed/-/jed-1.1.1.tgz#7a549bbd9ffe1585b0cd0a191e203055bee574b4"
+
 jest-docblock@20.0.3:
   version "20.0.3"
   resolved "https://registry.yarnpkg.com/jest-docblock/-/jest-docblock-20.0.3.tgz#17bea984342cc33d83c50fbe1545ea0efaa44712"
@@ -5840,6 +5881,10 @@ mem@^1.1.0:
   resolved "https://registry.yarnpkg.com/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
   dependencies:
     mimic-fn "^1.0.0"
+
+memize@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/memize/-/memize-1.0.5.tgz#51d89e8407643dbc8cab98c6d56b889f9a3954e3"
 
 memory-fs@^0.4.0, memory-fs@~0.4.1:
   version "0.4.1"
@@ -7739,6 +7784,10 @@ regenerator-runtime@^0.10.5:
 regenerator-runtime@^0.11.0:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
+
+regenerator-runtime@^0.12.0:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
 
 regenerator-transform@^0.10.0:
   version "0.10.1"
