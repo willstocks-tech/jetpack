@@ -10,9 +10,22 @@
     "require"    : {
         "composer/installers": "~1.0"
     },
+    "repositories": [{
+	    "type":"package",
+	    "package": {
+		"name": "phpcompatibility/phpcompatibility",
+		"version": "8.3.0",
+		"source": {
+		    "url": "https://github.com/PHPCompatibility/PHPCompatibility.git",
+		    "type": "git",
+		    "reference": "master"
+		}
+	    }
+    }],
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
         "wp-coding-standards/wpcs": "^1.1.0",
+	"phpcompatibility/phpcompatibility":"8.3.0",
         "sirbrillig/phpcs-variable-analysis": "^2.0",
         "phpcompatibility/phpcompatibility-wp": "^1.0"
     },
