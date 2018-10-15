@@ -7370,6 +7370,13 @@ p {
 			plugins_url( '_inc/blocks/', JETPACK__PLUGIN_FILE )
 		);
 
+		$jp_react_page = new Jetpack_React_Page();
+		wp_localize_script(
+			'jetpack-blocks-editor',
+			'Jetpack_Initial_State',
+			$jp_react_page->get_initial_state()
+		);
+
 		wp_enqueue_style( 'jetpack-blocks-editor', $editor_style, array(), $version );
 		wp_enqueue_script( 'jetpack-blocks-view', $view_script, array(), $version );
 		wp_enqueue_style( 'jetpack-blocks-view', $view_style, array(), $version );
