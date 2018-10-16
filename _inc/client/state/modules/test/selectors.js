@@ -11,7 +11,7 @@ import {
 	getModuleOverride,
 	isModuleForcedActive,
 	isModuleForcedInactive,
-} from '../selectors';
+} from '../reducer';
 
 let state = {
 	jetpack: {

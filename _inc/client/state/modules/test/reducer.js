@@ -4,10 +4,8 @@ import {
 	items as itemsReducer,
 	requests as requestsReducer,
 	initialRequestsState,
-} from '../reducer';
-import {
 	getModuleOptionValidValues
-} from '../selectors';
+} from '../reducer';
 
 describe( 'items reducer', () => {
 	it( 'state should default to empty object', () => {
