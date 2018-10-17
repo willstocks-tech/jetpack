@@ -64,7 +64,7 @@ class Jetpack_Gutenberg {
 		wp_enqueue_style( 'jetpack-blocks-view', $view_style, array(), $version );
 		wp_add_inline_script(
 			'wp-i18n',
-			'wp.i18n.setLocaleData( ' . self::get_i18n_data_json() . ', \'jetpack\' );'
+			'wp.i18n.setLocaleData( ' . Jetpack::get_i18n_data_json() . ', \'jetpack\' );'
 		);
 	}
 
